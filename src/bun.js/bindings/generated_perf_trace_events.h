@@ -2,35 +2,35 @@
 // clang-format off
 #define FOR_EACH_TRACE_EVENT(macro) \
   macro(Bundler.BindImportsToExports, 0) \
-  macro(Bundler.CloneLinkerGraph, 1) \
-  macro(Bundler.CreateNamespaceExports, 2) \
-  macro(Bundler.FigureOutCommonJS, 3) \
-  macro(Bundler.MatchImportsWithExports, 4) \
-  macro(Bundler.ParseJS, 5) \
-  macro(Bundler.ParseJSON, 6) \
-  macro(Bundler.ParseTOML, 7) \
-  macro(Bundler.ParseYAML, 8) \
-  macro(Bundler.ResolveExportStarStatements, 9) \
-  macro(Bundler.Worker.create, 10) \
-  macro(Bundler.WrapDependencies, 11) \
-  macro(Bundler.breakOutputIntoPieces, 12) \
-  macro(Bundler.cloneAST, 13) \
-  macro(Bundler.computeChunks, 14) \
-  macro(Bundler.findAllImportedPartsInJSOrder, 15) \
-  macro(Bundler.findReachableFiles, 16) \
-  macro(Bundler.generateChunksInParallel, 17) \
-  macro(Bundler.generateCodeForFileInChunkCss, 18) \
-  macro(Bundler.generateCodeForFileInChunkJS, 19) \
-  macro(Bundler.generateIsolatedHash, 20) \
-  macro(Bundler.generateSourceMapForChunk, 21) \
-  macro(Bundler.markFileLiveForTreeShaking, 22) \
-  macro(Bundler.markFileReachableForCodeSplitting, 23) \
-  macro(Bundler.onParseTaskComplete, 24) \
-  macro(Bundler.postProcessJSChunk, 25) \
-  macro(Bundler.readFile, 26) \
-  macro(Bundler.renameSymbolsInChunk, 27) \
-  macro(Bundler.scanImportsAndExports, 28) \
-  macro(Bundler.treeShakingAndCodeSplitting, 29) \
+  macro(Bundler.breakOutputIntoPieces, 1) \
+  macro(Bundler.cloneAST, 2) \
+  macro(Bundler.CloneLinkerGraph, 3) \
+  macro(Bundler.computeChunks, 4) \
+  macro(Bundler.CreateNamespaceExports, 5) \
+  macro(Bundler.FigureOutCommonJS, 6) \
+  macro(Bundler.findAllImportedPartsInJSOrder, 7) \
+  macro(Bundler.findReachableFiles, 8) \
+  macro(Bundler.generateChunksInParallel, 9) \
+  macro(Bundler.generateCodeForFileInChunkCss, 10) \
+  macro(Bundler.generateCodeForFileInChunkJS, 11) \
+  macro(Bundler.generateIsolatedHash, 12) \
+  macro(Bundler.generateSourceMapForChunk, 13) \
+  macro(Bundler.markFileLiveForTreeShaking, 14) \
+  macro(Bundler.markFileReachableForCodeSplitting, 15) \
+  macro(Bundler.MatchImportsWithExports, 16) \
+  macro(Bundler.onParseTaskComplete, 17) \
+  macro(Bundler.ParseJS, 18) \
+  macro(Bundler.ParseJSON, 19) \
+  macro(Bundler.ParseTOML, 20) \
+  macro(Bundler.ParseYAML, 21) \
+  macro(Bundler.postProcessJSChunk, 22) \
+  macro(Bundler.readFile, 23) \
+  macro(Bundler.renameSymbolsInChunk, 24) \
+  macro(Bundler.ResolveExportStarStatements, 25) \
+  macro(Bundler.scanImportsAndExports, 26) \
+  macro(Bundler.treeShakingAndCodeSplitting, 27) \
+  macro(Bundler.Worker.create, 28) \
+  macro(Bundler.WrapDependencies, 29) \
   macro(Bundler.writeChunkToDisk, 30) \
   macro(Bundler.writeOutputFilesToDisk, 31) \
   macro(ExtractTarball.extract, 32) \
@@ -49,14 +49,15 @@
   macro(JSPrinter.printWithSourceMap, 45) \
   macro(ModuleResolver.resolve, 46) \
   macro(PackageInstaller.install, 47) \
-  macro(PackageManifest.Serializer.loadByFile, 48) \
-  macro(PackageManifest.Serializer.save, 49) \
-  macro(RuntimeTranspilerCache.fromFile, 50) \
-  macro(RuntimeTranspilerCache.save, 51) \
-  macro(RuntimeTranspilerCache.toFile, 52) \
-  macro(StandaloneModuleGraph.serialize, 53) \
-  macro(Symbols.followAll, 54) \
-  macro(TestCommand.printCodeCoverageLCov, 55) \
-  macro(TestCommand.printCodeCoverageLCovAndText, 56) \
-  macro(TestCommand.printCodeCoverageText, 57) \
+  macro(PackageInstaller.installPythonPackage, 48) \
+  macro(PackageManifest.Serializer.loadByFile, 49) \
+  macro(PackageManifest.Serializer.save, 50) \
+  macro(RuntimeTranspilerCache.fromFile, 51) \
+  macro(RuntimeTranspilerCache.save, 52) \
+  macro(RuntimeTranspilerCache.toFile, 53) \
+  macro(StandaloneModuleGraph.serialize, 54) \
+  macro(Symbols.followAll, 55) \
+  macro(TestCommand.printCodeCoverageLCov, 56) \
+  macro(TestCommand.printCodeCoverageLCovAndText, 57) \
+  macro(TestCommand.printCodeCoverageText, 58) \
   // end

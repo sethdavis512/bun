@@ -1811,6 +1811,22 @@ pub fn resolveMaybeNeedsTrailingSlash(
         jsc_vm.transpiler.resolver.log = old_log;
     }
     jsc_vm._resolve(&result, specifier_utf8.slice(), normalizeSource(source_utf8.slice()), is_esm, is_a_file_path) catch |err_| {
+        // Check if this is a Python package in .venv (fallback after node_modules)
+        // Only check for bare specifiers (not paths)
+        const spec_slice = specifier_utf8.slice();
+        if (spec_slice.len > 0 and spec_slice[0] != '.' and spec_slice[0] != '/') {
+            // Check if package exists in .venv/lib/python{version}/site-packages/
+            var path_buf: bun.PathBuffer = undefined;
+            if (std.fmt.bufPrint(&path_buf, pypi.venv_site_packages ++ "/{s}", .{spec_slice})) |venv_path| {
+                // Check if directory exists (Python package)
+                if (bun.sys.directoryExistsAt(bun.FD.cwd(), venv_path).unwrap() catch false) {
+                    // Return the specifier as-is - fetchBuiltinModule will handle it
+                    res.* = ErrorableString.ok(specifier);
+                    return;
+                }
+            } else |_| {}
+        }
+
         var err = err_;
         const msg: logger.Msg = brk: {
             const msgs: []logger.Msg = log.msgs.items;
@@ -3771,3 +3787,5 @@ const ServerEntryPoint = bun.transpiler.EntryPoints.ServerEntryPoint;
 
 const webcore = bun.webcore;
 const Body = webcore.Body;
+
+const pypi = @import("../install/pypi.zig");

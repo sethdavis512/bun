@@ -1463,6 +1463,59 @@ pub const PackageInstall = struct {
         // TODO: linux io_uring
         return this.installWithCopyfile(destination_dir);
     }
+
+    /// Install a Python package from a wheel cache to site-packages.
+    /// Unlike npm packages, wheel contents (package dirs + dist-info) are copied directly
+    /// to site-packages, not wrapped in a subdirectory.
+    pub fn installPythonPackage(this: *@This(), site_packages_dir: std.fs.Dir, method_: Method) Result {
+        const tracer = bun.perf.trace("PackageInstaller.installPythonPackage");
+        defer tracer.end();
+
+        // Open the cache directory containing the extracted wheel
+        var cached_wheel_dir = bun.openDir(this.cache_dir, this.cache_dir_subpath) catch |err| {
+            return Result.fail(err, .opening_cache_dir, @errorReturnTrace());
+        };
+        defer cached_wheel_dir.close();
+
+        // Save original values
+        const original_cache_dir = this.cache_dir;
+        const original_cache_subpath = this.cache_dir_subpath;
+        const original_dest_subpath = this.destination_dir_subpath;
+        defer {
+            this.cache_dir = original_cache_dir;
+            this.cache_dir_subpath = original_cache_subpath;
+            this.destination_dir_subpath = original_dest_subpath;
+        }
+
+        // Set cache_dir to the wheel directory
+        this.cache_dir = cached_wheel_dir;
+
+        // Iterate through all entries in the wheel cache and copy each directory
+        var iter = cached_wheel_dir.iterate();
+        while (iter.next() catch |err| {
+            return Result.fail(err, .opening_cache_dir, @errorReturnTrace());
+        }) |entry| {
+            if (entry.kind != .directory) continue;
+
+            // Build null-terminated subdir name for both source and dest
+            if (entry.name.len >= this.destination_dir_subpath_buf.len) continue;
+            @memcpy(this.destination_dir_subpath_buf[0..entry.name.len], entry.name);
+            this.destination_dir_subpath_buf[entry.name.len] = 0;
+            const subdir_name_z: [:0]u8 = this.destination_dir_subpath_buf[0..entry.name.len :0];
+
+            // Set paths to point to this subdirectory
+            this.cache_dir_subpath = subdir_name_z;
+            this.destination_dir_subpath = subdir_name_z;
+
+            // Use the existing install method which handles clonefile/hardlink/copy fallback
+            const result = this.install(false, site_packages_dir, method_, .pypi);
+            if (result != .success) {
+                return result;
+            }
+        }
+
+        return .success;
+    }
 };
 
 const string = []const u8;

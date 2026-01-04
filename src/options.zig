@@ -634,6 +634,7 @@ pub const Loader = enum(u8) {
     sqlite_embedded = 16,
     html = 17,
     yaml = 18,
+    py = 19,
 
     pub const Optional = enum(u8) {
         none = 254,
@@ -734,7 +735,7 @@ pub const Loader = enum(u8) {
 
     pub fn canBeRunByBun(this: Loader) bool {
         return switch (this) {
-            .jsx, .js, .ts, .tsx, .wasm, .bunsh => true,
+            .jsx, .js, .ts, .tsx, .wasm, .bunsh, .py => true,
             else => false,
         };
     }
@@ -805,6 +806,7 @@ pub const Loader = enum(u8) {
         .{ "sqlite", .sqlite },
         .{ "sqlite_embedded", .sqlite_embedded },
         .{ "html", .html },
+        .{ "py", .py },
     });
 
     pub const api_names = bun.ComptimeStringMap(api.Loader, .{
@@ -831,6 +833,7 @@ pub const Loader = enum(u8) {
         .{ "sh", .file },
         .{ "sqlite", .sqlite },
         .{ "html", .html },
+        .{ "py", .py },
     });
 
     pub fn fromString(slice_: string) ?Loader {
@@ -868,6 +871,7 @@ pub const Loader = enum(u8) {
             .dataurl => .dataurl,
             .text => .text,
             .sqlite_embedded, .sqlite => .sqlite,
+            .py => .py,
         };
     }
 
@@ -893,6 +897,7 @@ pub const Loader = enum(u8) {
             .html => .html,
             .sqlite => .sqlite,
             .sqlite_embedded => .sqlite_embedded,
+            .py => .py,
             _ => .file,
         };
     }
@@ -1111,6 +1116,7 @@ const default_loaders_posix = .{
     .{ ".text", .text },
     .{ ".html", .html },
     .{ ".jsonc", .jsonc },
+    .{ ".py", .py },
 };
 const default_loaders_win32 = default_loaders_posix ++ .{
     .{ ".sh", .bunsh },
